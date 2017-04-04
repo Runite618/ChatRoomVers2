@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
@@ -21,10 +22,9 @@ public class ChatClient {
         System.out.println("Establishing connection. Please wait ...");
         socket = new Socket(serverName, serverPort);
         System.out.println("Connected: " + socket);
-        start();
     }
 
-    public void start() throws IOException {
+    public void startClient(Socket socket) throws IOException {
         streamOut = new DataOutputStream(socket.getOutputStream());
     }
     
