@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="LoginController">
+    <stylesheets>
+        <URL value="@login.css" />
+    </stylesheets>
+   <children>
+      <HBox fx:id="userBox" layoutX="187.0" layoutY="152.0" prefHeight="25.0" prefWidth="227.0">
+         <children>
+            <Label fx:id="user" alignment="BASELINE_LEFT" text="User: ">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <TextField fx:id="userField" prefHeight="25.0" prefWidth="159.0" />
+         </children>
+      </HBox>
+      <Button fx:id="enterChatRoom" layoutX="242.0" layoutY="200.0" mnemonicParsing="false" text="Enter chatroom">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Label fx:id="userEmpty" alignment="CENTER" layoutX="182.0" layoutY="112.0" prefHeight="17.0" prefWidth="236.0">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

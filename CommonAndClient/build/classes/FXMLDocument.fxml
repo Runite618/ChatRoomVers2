@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="475.0" prefWidth="566.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="FXMLDocumentController">
+    <children>
+        <Label fx:id="label" layoutX="126" layoutY="120" minHeight="16" minWidth="69" />
+      <TableView fx:id="usersView" layoutX="36.0" layoutY="29.0" prefHeight="407.0" prefWidth="81.0">
+        <columns>
+          <TableColumn fx:id="users" text="Users" />
+        </columns>
+      </TableView>
+      <TextField fx:id="chatMessage" alignment="CENTER" layoutX="134.0" layoutY="371.0" onAction="#onEnter" prefHeight="65.0" prefWidth="358.0" promptText="Enter chat message here. Type in .bye to exit program" />
+      <Button fx:id="send" layoutX="499.0" layoutY="391.0" mnemonicParsing="false" text="Send" />
+      <TextArea fx:id="chatRoom" editable="false" layoutX="134.0" layoutY="28.0" prefHeight="317.0" prefWidth="358.0" promptText="Chat message across all users" />
+    </children>
+</AnchorPane>
