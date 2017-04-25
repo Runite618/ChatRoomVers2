@@ -10,6 +10,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import static javafx.application.Application.launch;
 
 public class ChatClient {
 
@@ -22,10 +23,16 @@ public class ChatClient {
         System.out.println("Establishing connection. Please wait ...");
         socket = new Socket(serverName, serverPort);
         System.out.println("Connected: " + socket);
+        streamOut = startClient(socket);
     }
 
-    public void startClient(Socket socket) throws IOException {
-        streamOut = new DataOutputStream(socket.getOutputStream());
+    public void setStreamOut(DataOutputStream streamOut)
+    {
+        this.streamOut = streamOut;
+    }
+    
+    public DataOutputStream startClient(Socket socket) throws IOException {
+        return streamOut = new DataOutputStream(socket.getOutputStream());
     }
     
     public String send(InputStream console) throws UnsupportedEncodingException, IOException
@@ -56,6 +63,6 @@ public class ChatClient {
     
     public static void main(String[] args) throws IOException
     {
-       ChatClient chatClient = new ChatClient("localhost", 1030);
+       launch(args);
     }
 }

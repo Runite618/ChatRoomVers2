@@ -87,7 +87,7 @@ public class FXMLDocumentController implements Initializable {
             chatMessage.setStyle("-fx-prompt-text-fill: derive(-fx-control-inner-background, -30%);");
             
             chatRoom.setStyle("-fx-prompt-text-fill: derive(-fx-control-inner-background, -30%);");
-            chatClient = new ChatClient("localhost", 1030);
+            chatClient = new ChatClient("localhost", 3306);
             
             send.setOnAction(new EventHandler<ActionEvent>() {
 

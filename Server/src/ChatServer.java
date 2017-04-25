@@ -1,7 +1,8 @@
 
-import java.io.DataInputStream;
 import java.io.IOException;
-import java.net.ServerSocket;
+import javafx.application.Application;
+import static javafx.application.Application.launch;
+import javafx.stage.Stage;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -13,15 +14,11 @@ import java.net.ServerSocket;
  *
  * @author matth
  */
-public class ChatServer extends SuperClass{
-    private ServerSocket serverSocket;
-    
-    public ChatServer(ServerSocket serverSocket) throws IOException
-    {
-        super(1030);
-        this.serverSocket = serverSocket;
-        clientToServer(this.serverSocket);
-        DataInputStream streamIn = open(getClientSocket());
-        printLine(streamIn);
+public class ChatServer extends Application {
+
+    @Override
+    public void start(Stage primaryStage) throws IOException{
+        Thread t1 = new Thread(new ThreadServer());
+        t1.start();
     }
 }
