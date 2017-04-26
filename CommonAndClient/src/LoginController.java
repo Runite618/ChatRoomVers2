@@ -57,31 +57,32 @@ public class LoginController implements Initializable {
         
         public static String getUserName()
         {
-            return UserName.user.get();
+            return user.get();
         }
         
-        public void setUserName(String user)
+        public static void setUserName(String user)
         {
-            this.user.set(user);
+            UserName.user.set(user);
         }
     }
 
+    public UserName userName;
+    
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
         // TODO
         enterChatRoom.setOnAction(new EventHandler<ActionEvent>() {
-
             @Override
             public void handle(ActionEvent event) {
-                if (userField.getText() != null && !userField.getText().isEmpty()) {
+                String textOfUserField = userField.getText();
+                if (textOfUserField != null && !textOfUserField.isEmpty()) {
                     Stage stage;
                     Parent root = null;
 
-                    UserName userName = new UserName(userField.getText());
+                    userName = new UserName(textOfUserField);
                     
                     stage = (Stage) enterChatRoom.getScene().getWindow();
                     try {

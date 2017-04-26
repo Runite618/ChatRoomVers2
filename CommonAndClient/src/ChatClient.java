@@ -12,7 +12,7 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import static javafx.application.Application.launch;
 
-public class ChatClient {
+public class ChatClient extends Thread{
 
     private Socket socket;
     public InputStream console;
@@ -47,18 +47,6 @@ public class ChatClient {
     public void writeToUTF(String wholeLine) throws IOException
     {
        streamOut.writeUTF(wholeLine);
-    }
-
-    public void stop() throws IOException {
-        if (console != null) {
-            console.close();
-        }
-        if (streamOut != null) {
-            console.close();
-        }
-        if (socket != null) {
-            console.close();
-        }
     }
     
     public static void main(String[] args) throws IOException

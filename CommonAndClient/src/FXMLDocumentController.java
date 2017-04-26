@@ -41,7 +41,7 @@ import javafx.stage.Stage;
  *
  * @author matth
  */
-public class FXMLDocumentController implements Initializable {
+public class FXMLDocumentController extends LoginController implements Initializable {
 
     @FXML
     private Label label;
@@ -70,9 +70,9 @@ public class FXMLDocumentController implements Initializable {
     
     public ChatClient chatClient;
     
-    public LoginController.UserName UserName;
+    public static LoginController.UserName UserName;
 
-    public LoginController.UserName getUser() {
+    public static LoginController.UserName getUser() {
         return UserName;
     }
 

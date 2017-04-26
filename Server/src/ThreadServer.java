@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
@@ -22,14 +23,14 @@ import static javafx.application.Application.launch;
  *
  * @author matth
  */
-public final class ThreadServer extends Application implements Runnable{
+public final class ThreadServer extends FXMLDocumentController implements Runnable{
     private DataInputStream streamIn;
     private DataOutputStream streamOut;
     private Socket clientSocket;
     private ServerSocket serverSocket;
-    private LoginController.UserName userName;
     private static final int portNumber = 3306;
     private static Thread t1;
+    private ArrayList<ClientThread> al = new ArrayList<ClientThread>();
     
     public static int getPortNumber()
     {
@@ -49,10 +50,6 @@ public final class ThreadServer extends Application implements Runnable{
     public Socket getClientSocket()
     {
         return clientSocket;
-    }
-
-    public LoginController.UserName getUserName() {
-        return userName;
     }
     
     public void setServerSocket(ServerSocket serverSocket)
@@ -88,12 +85,13 @@ public final class ThreadServer extends Application implements Runnable{
         }
     }
     
-    public ThreadServer()
-    {
+    public ThreadServer() throws NoSuchMethodException
+    {   
         try {
-            System.out.println("Binding to port " + getPortNumber() + ", please wait  ...");
-            clientToServer();
-            open();
+//            System.out.println("Binding to port " + getPortNumber() + ", please wait  ...");
+//            clientToServer();
+//            open();
+            start();
             acceptClient();
             printLine();
         } catch (IOException ex) {
@@ -126,13 +124,33 @@ public final class ThreadServer extends Application implements Runnable{
         }
     }
 
-    @Override
-    public void start(Stage primaryStage){
+    public void start() throws IOException, NoSuchMethodException{
+        ServerSocket serverSocket = new ServerSocket(portNumber);
+        
+        while(true)
+        {
+            try {
+                System.out.println("Server waiting for clients on port: " + portNumber);
+                Socket socket = serverSocket.accept();
+                Class<? extends UserName> userName = UserName.class;
+                ClientThread t = new ClientThread(socket, userName);
+                al.add(t);
+                t.start();
+            } catch (IOException ex) {
+                Logger.getLogger(ThreadServer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
     
     @Override
     public void run()
     {
-        
+        try {
+            start();
+        } catch (IOException ex) {
+            Logger.getLogger(ThreadServer.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchMethodException ex) {
+            Logger.getLogger(ThreadServer.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
