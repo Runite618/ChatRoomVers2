@@ -19,5 +19,6 @@ public class ChatServer extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException, NoSuchMethodException{
         Thread t1 = new Thread(new ThreadServer());
+        t1.start();
     }
 }

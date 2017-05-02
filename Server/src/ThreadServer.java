@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
@@ -23,7 +24,7 @@ import static javafx.application.Application.launch;
  *
  * @author matth
  */
-public final class ThreadServer extends FXMLDocumentController implements Runnable{
+public final class ThreadServer extends ClientThread implements Runnable{
     private DataInputStream streamIn;
     private DataOutputStream streamOut;
     private Socket clientSocket;
@@ -31,6 +32,7 @@ public final class ThreadServer extends FXMLDocumentController implements Runnab
     private static final int portNumber = 3306;
     private static Thread t1;
     private ArrayList<ClientThread> al = new ArrayList<ClientThread>();
+    private Integer count = 0;
     
     public static int getPortNumber()
     {
@@ -85,18 +87,12 @@ public final class ThreadServer extends FXMLDocumentController implements Runnab
         }
     }
     
-    public ThreadServer() throws NoSuchMethodException
-    {   
-        try {
+    public ThreadServer()
+    {
 //            System.out.println("Binding to port " + getPortNumber() + ", please wait  ...");
 //            clientToServer();
 //            open();
-            start();
-            acceptClient();
-            printLine();
-        } catch (IOException ex) {
-            Logger.getLogger(ThreadServer.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        super();
     }
     
     public void clientToServer() throws IOException
@@ -113,44 +109,51 @@ public final class ThreadServer extends FXMLDocumentController implements Runnab
         setStreamOut(chatClient.startClient(getClientSocket()));
         System.out.println("Client accepted: " + getClientSocket());
     }
-    
-    public void printLine() throws IOException {
-        boolean done = false;
 
-        while (!done) {
-            String line = getStreamIn().readUTF();
-            System.out.println(line);
-            done = line.contains(".bye");
-        }
-    }
-
-    public void start() throws IOException, NoSuchMethodException{
-        ServerSocket serverSocket = new ServerSocket(portNumber);
+    @Override
+    public void start(){
         
-        while(true)
-        {
-            try {
-                System.out.println("Server waiting for clients on port: " + portNumber);
-                Socket socket = serverSocket.accept();
-                Class<? extends UserName> userName = UserName.class;
-                ClientThread t = new ClientThread(socket, userName);
-                al.add(t);
-                t.start();
-            } catch (IOException ex) {
-                Logger.getLogger(ThreadServer.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
     }
     
     @Override
     public void run()
-    {
+    {   
+        ServerSocket serverSocket = null;
         try {
-            start();
+            serverSocket = new ServerSocket(portNumber);
         } catch (IOException ex) {
             Logger.getLogger(ThreadServer.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NoSuchMethodException ex) {
-            Logger.getLogger(ThreadServer.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        boolean flag = true;
+        Scanner reader = new Scanner(System.in); 
+        outer: while(flag)
+        {
+            try {
+                System.out.println("Server waiting for clients on port: " + portNumber);
+                Socket socket = serverSocket.accept();
+                Class<? extends FXMLDocumentController.UserName> userName = FXMLDocumentController.UserName.class;
+                ClientThread t = null;
+                try {
+                    t = new ClientThread(socket, userName);
+                } catch (NoSuchMethodException ex) {
+                    Logger.getLogger(ThreadServer.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                al.add(t);
+                t.start();
+                System.out.println("Continue adding clients? [y/n]");
+                String answer = reader.nextLine();
+                count++;
+                if (answer.contains("n"))
+                {
+                    flag = false;
+                    break outer;
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(ThreadServer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        Thread printLineThread = new Thread(new PrintLine(al, count));
+        printLineThread.start();
     }
 }
