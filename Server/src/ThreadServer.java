@@ -153,7 +153,10 @@ public final class ThreadServer extends ClientThread implements Runnable{
                 Logger.getLogger(ThreadServer.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        Thread printLineThread = new Thread(new PrintLine(al, count));
-        printLineThread.start();
+        for (int i = 0; i < al.size(); i++)
+        {
+            Thread printLineThread = new Thread(new PrintLine(al.get(i), count));
+            printLineThread.start();
+        }
     }
 }
