@@ -18,17 +18,39 @@ public class ChatClient extends Thread{
     public InputStream console;
     private BufferedReader consoleReader;
     private DataOutputStream streamOut;
+    protected DataInputStream streamIn;
+    
+    public ChatClient()
+    {
+        
+    }
     
     public ChatClient(String serverName, int serverPort) throws IOException {
         System.out.println("Establishing connection. Please wait ...");
         socket = new Socket(serverName, serverPort);
         System.out.println("Connected: " + socket);
         streamOut = startClient(socket);
+        streamIn = new DataInputStream(socket.getInputStream());
     }
 
     public void setStreamOut(DataOutputStream streamOut)
     {
         this.streamOut = streamOut;
+    }
+    
+    public void setStreamIn(DataInputStream streamIn)
+    {
+        this.streamIn = streamIn;
+    }
+    
+    public DataOutputStream getStreamOut()
+    {
+        return streamOut;
+    }
+    
+    public DataInputStream getStreamIn()
+    {
+        return streamIn;
     }
     
     public DataOutputStream startClient(Socket socket) throws IOException {
@@ -52,5 +74,9 @@ public class ChatClient extends Thread{
     public static void main(String[] args) throws IOException
     {
        launch(args);
+    }
+    
+    public void run()
+    {
     }
 }

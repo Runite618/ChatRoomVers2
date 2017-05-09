@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -86,7 +88,7 @@ public class LoginController implements Initializable {
                     
                     stage = (Stage) enterChatRoom.getScene().getWindow();
                     try {
-                        root = (Parent) controllerFactory(userName).load(this.getClass().getResourceAsStream("FXMLDocument.fxml"));
+                        root = (Parent) controllerFactory(userName).load(this.getClass().getResource("FXMLDocument.fxml"));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

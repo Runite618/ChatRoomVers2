@@ -41,7 +41,7 @@ import javafx.stage.Stage;
  *
  * @author matth
  */
-public class FXMLDocumentController extends LoginController implements Initializable {
+public class FXMLDocumentController extends LoginController implements Initializable, Runnable {
 
     @FXML
     private Label label;
@@ -68,7 +68,7 @@ public class FXMLDocumentController extends LoginController implements Initializ
         chatMessage.setText("");
     }
     
-    public ChatClient chatClient;
+    private ChatClient chatClient;
     
     public static LoginController.UserName UserName;
 
@@ -80,23 +80,44 @@ public class FXMLDocumentController extends LoginController implements Initializ
         this.UserName = userName;
     }
 
+    public ChatClient getChatClient()
+    {
+        return chatClient;
+    }
+    
+    public void setChatClient(ChatClient chatClient)
+    {
+        this.chatClient = chatClient;
+    }
+    
+    public TextArea getChatRoom()
+    {
+        return chatRoom;
+    }
+    
+    public void setChatRoom(TextArea chatRoom)
+    {
+        this.chatRoom = chatRoom;
+    }
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
             users.prefWidthProperty().bind(usersView.widthProperty());
             chatMessage.setStyle("-fx-prompt-text-fill: derive(-fx-control-inner-background, -30%);");
-            
             chatRoom.setStyle("-fx-prompt-text-fill: derive(-fx-control-inner-background, -30%);");
-            chatClient = new ChatClient("localhost", 3306);
-            
+            setChatClient(new ChatClient("localhost", 3306));
+            Thread clientThread = new Thread(getChatClient());
+            clientThread.start();
+            Thread serverThread = new Thread(new ListenFromServer(chatClient));
+            serverThread.start();
             send.setOnAction(new EventHandler<ActionEvent>() {
-
+                
                 @Override
                 public void handle(ActionEvent event) {
                     send(chatClient);
                 }
             });
-            
             users.setCellValueFactory(new PropertyValueFactory<LoginController.UserName, String>("userName"));
             usersView.getItems().add(getUser());
         } catch (IOException ex) {
@@ -112,7 +133,7 @@ public class FXMLDocumentController extends LoginController implements Initializ
             line = chatClient.send(console);
             if(line.contains(".bye"))
             {
-               chatClient.stop();
+//               chatClient.stop();
                System.exit(0);
             }
             chatMessage.setText("");
@@ -125,5 +146,10 @@ public class FXMLDocumentController extends LoginController implements Initializ
         } catch (IOException ex) {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public void run()
+    {
+        
     }
 }
