@@ -48,6 +48,12 @@ public class LoginController implements Initializable {
 
     @FXML
     private Label userEmpty;
+    
+    @FXML
+    public void onEnter(ActionEvent ae) throws IOException
+    {
+        enterChatRoom();
+    }
 
     public static class UserName {
 
@@ -79,30 +85,35 @@ public class LoginController implements Initializable {
         enterChatRoom.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                String textOfUserField = userField.getText();
-                if (textOfUserField != null && !textOfUserField.isEmpty()) {
-                    Stage stage;
-                    Parent root = null;
-
-                    userName = new UserName(textOfUserField);
-                    
-                    stage = (Stage) enterChatRoom.getScene().getWindow();
-                    try {
-                        root = (Parent) controllerFactory(userName).load(this.getClass().getResource("FXMLDocument.fxml"));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    Scene scene = new Scene(root);
-                    stage.setScene(scene);
-                    stage.show();
-                } else {
-                    userEmpty.setText("Please enter a user name");
-                }
+                enterChatRoom();
             }
         });
     }
 
+    public void enterChatRoom()
+    {
+        String textOfUserField = userField.getText();
+        if (textOfUserField != null && !textOfUserField.isEmpty()) {
+            Stage stage;
+            Parent root = null;
+
+            userName = new UserName(textOfUserField);
+
+            stage = (Stage) enterChatRoom.getScene().getWindow();
+            try {
+                root = (Parent) controllerFactory(userName).load(this.getClass().getResource("FXMLDocument.fxml"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        } else {
+            userEmpty.setText("Please enter a user name");
+        }
+    }
+    
     public FXMLLoader controllerFactory(UserName userName) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("FXMLDocument.fxml"));
         fxmlLoader.setControllerFactory(new Callback<Class<?>, Object>() {
