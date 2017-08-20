@@ -50,10 +50,10 @@ public class FXMLDocumentController extends LoginController implements Initializ
     private Button send;
 
     @FXML
-    private TableColumn<LoginController.UserName, String> users;
+    private TableColumn<LoginController.User, String> users;
 
     @FXML
-    private TableView<LoginController.UserName> usersView;
+    private TableView<LoginController.User> usersView;
 
     @FXML
     public TextField chatMessage;
@@ -70,13 +70,13 @@ public class FXMLDocumentController extends LoginController implements Initializ
     
     private ChatClient chatClient;
     
-    public static LoginController.UserName UserName;
+    public static LoginController.User UserName;
 
-    public static LoginController.UserName getUser() {
+    public static LoginController.User getUser() {
         return UserName;
     }
 
-    public void setUser(LoginController.UserName userName) {
+    public void setUser(LoginController.User userName) {
         this.UserName = userName;
     }
 
@@ -106,7 +106,7 @@ public class FXMLDocumentController extends LoginController implements Initializ
             users.prefWidthProperty().bind(usersView.widthProperty());
             chatMessage.setStyle("-fx-prompt-text-fill: derive(-fx-control-inner-background, -30%);");
             chatRoom.setStyle("-fx-prompt-text-fill: derive(-fx-control-inner-background, -30%);");
-            setChatClient(new ChatClient("localhost", 3306));
+            setChatClient(new ChatClient("localhost", 4));
             Thread clientThread = new Thread(getChatClient());
             clientThread.start();
             Thread serverThread = new Thread(new ListenFromServer(chatClient));
@@ -118,7 +118,7 @@ public class FXMLDocumentController extends LoginController implements Initializ
                     send(chatClient);
                 }
             });
-            users.setCellValueFactory(new PropertyValueFactory<LoginController.UserName, String>("userName"));
+            users.setCellValueFactory(new PropertyValueFactory<LoginController.User, String>("userName"));
             usersView.getItems().add(getUser());
         } catch (IOException ex) {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
@@ -137,8 +137,8 @@ public class FXMLDocumentController extends LoginController implements Initializ
                System.exit(0);
             }
             chatMessage.setText("");
-            String wholeLine = UserName.getUserName() + ": " + line;
-            String wholeLineN = UserName.getUserName() + ": " + line + "\n";
+            String wholeLine = UserName.getUser() + ": " + line;
+            String wholeLineN = UserName.getUser() + ": " + line + "\n";
             chatClient.writeToUTF(wholeLine);
             chatRoom.appendText(wholeLineN);
         } catch (UnsupportedEncodingException ex) {

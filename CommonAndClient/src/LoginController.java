@@ -55,26 +55,21 @@ public class LoginController implements Initializable {
         enterChatRoom();
     }
 
-    public static class UserName {
-
-        public static SimpleStringProperty user;
-
-        public UserName(String user) {
-            this.user = new SimpleStringProperty(user);
+    public class User
+    {
+        public String user;
+        
+        public User(String user)
+        {
+            this.user = user;
         }
         
-        public static String getUserName()
-        {
-            return user.get();
-        }
-        
-        public static void setUserName(String user)
-        {
-            UserName.user.set(user);
+        public String getUser() {
+            return user;
         }
     }
 
-    public UserName userName;
+    public User userName;
     
     /**
      * Initializes the controller class.
@@ -97,11 +92,11 @@ public class LoginController implements Initializable {
             Stage stage;
             Parent root = null;
 
-            userName = new UserName(textOfUserField);
-
+            userName = new User(textOfUserField);
+            
             stage = (Stage) enterChatRoom.getScene().getWindow();
             try {
-                root = (Parent) controllerFactory(userName).load(this.getClass().getResource("FXMLDocument.fxml"));
+                root = controllerFactory(userName).load();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -114,7 +109,7 @@ public class LoginController implements Initializable {
         }
     }
     
-    public FXMLLoader controllerFactory(UserName userName) {
+    public FXMLLoader controllerFactory(User userName) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("FXMLDocument.fxml"));
         fxmlLoader.setControllerFactory(new Callback<Class<?>, Object>() {
             @Override

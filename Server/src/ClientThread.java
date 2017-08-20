@@ -25,18 +25,18 @@ public class ClientThread extends Thread {
     protected DataInputStream sInput;
     protected DataOutputStream sOutput;
     private UUID id;
-    private Class<? extends LoginController.UserName> userName;
+    private Class<? extends LoginController.User> user;
     
     ClientThread()
     {
         
     }
     
-    ClientThread(Socket socket, Class<? extends LoginController.UserName> userName) throws IOException, NoSuchMethodException
+    ClientThread(Socket socket, Class<? extends LoginController.User> user) throws IOException, NoSuchMethodException
     {
         this.id = randomUUID();
         this.socket = socket;
-        this.userName = userName;
+        this.user = user;
     }
     
     public void run()
@@ -45,7 +45,7 @@ public class ClientThread extends Thread {
             System.out.println("Thread is attempting to create Data Input/Output Streams");
             sInput = new DataInputStream(socket.getInputStream());
             sOutput = new DataOutputStream(socket.getOutputStream());
-            System.out.println(userName.toString() + " " + this.id + " just connected.");
+            System.out.println(user.toString() + " " + this.id + " just connected.");
         } catch (IOException ex) {
             Logger.getLogger(ClientThread.class.getName()).log(Level.SEVERE, null, ex);
         }

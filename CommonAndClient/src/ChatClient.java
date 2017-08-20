@@ -71,7 +71,7 @@ public class ChatClient extends Thread{
        streamOut.writeUTF(wholeLine);
     }
     
-    public static void main(String[] args) throws IOException
+    public static void main(String[] args)
     {
        launch(args);
     }

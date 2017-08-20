@@ -29,7 +29,7 @@ public final class ThreadServer extends ClientThread implements Runnable{
     private DataOutputStream streamOut;
     private Socket clientSocket;
     private ServerSocket serverSocket;
-    private static final int portNumber = 3306;
+    private static final int portNumber = 4;
     private static Thread t1;
     private ArrayList<ClientThread> al = new ArrayList<ClientThread>();
     private Integer count = 0;
@@ -97,7 +97,7 @@ public final class ThreadServer extends ClientThread implements Runnable{
     
     public void clientToServer() throws IOException
     {
-        setServerSocket(new ServerSocket(3306));
+        setServerSocket(new ServerSocket(portNumber));
         System.out.println("Server started: " + getServerSocket());
         System.out.println("Waiting for a client ...");
         setClientSocket(serverSocket.accept());
@@ -105,7 +105,7 @@ public final class ThreadServer extends ClientThread implements Runnable{
     
     public void acceptClient() throws IOException
     {
-        ChatClient chatClient = new ChatClient("localhost", 3306);
+        ChatClient chatClient = new ChatClient("localhost", portNumber);
         setStreamOut(chatClient.startClient(getClientSocket()));
         System.out.println("Client accepted: " + getClientSocket());
     }
@@ -132,10 +132,10 @@ public final class ThreadServer extends ClientThread implements Runnable{
             try {
                 System.out.println("Server waiting for clients on port: " + portNumber);
                 Socket socket = serverSocket.accept();
-                Class<? extends FXMLDocumentController.UserName> userName = FXMLDocumentController.UserName.class;
+                Class<? extends FXMLDocumentController.User> user = FXMLDocumentController.User.class;
                 ClientThread t = null;
                 try {
-                    t = new ClientThread(socket, userName);
+                    t = new ClientThread(socket, user);
                 } catch (NoSuchMethodException ex) {
                     Logger.getLogger(ThreadServer.class.getName()).log(Level.SEVERE, null, ex);
                 }
