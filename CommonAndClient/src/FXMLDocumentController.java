@@ -118,7 +118,7 @@ public class FXMLDocumentController extends LoginController implements Initializ
                     send(chatClient);
                 }
             });
-            users.setCellValueFactory(new PropertyValueFactory<LoginController.User, String>("userName"));
+            users.setCellValueFactory(new PropertyValueFactory<LoginController.User, String>("user"));
             usersView.getItems().add(getUser());
         } catch (IOException ex) {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
