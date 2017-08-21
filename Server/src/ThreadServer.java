@@ -24,7 +24,7 @@ import static javafx.application.Application.launch;
  *
  * @author matth
  */
-public final class ThreadServer extends Aggregation implements Runnable{
+public final class ThreadServer extends ClientThread implements Runnable{
     private DataInputStream streamIn;
     private DataOutputStream streamOut;
     private Socket clientSocket;
