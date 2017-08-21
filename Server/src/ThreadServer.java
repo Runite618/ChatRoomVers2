@@ -24,7 +24,7 @@ import static javafx.application.Application.launch;
  *
  * @author matth
  */
-public final class ThreadServer extends ClientThread implements Runnable{
+public final class ThreadServer extends Aggregation implements Runnable{
     private DataInputStream streamIn;
     private DataOutputStream streamOut;
     private Socket clientSocket;
@@ -109,11 +109,6 @@ public final class ThreadServer extends ClientThread implements Runnable{
         setStreamOut(chatClient.startClient(getClientSocket()));
         System.out.println("Client accepted: " + getClientSocket());
     }
-
-    @Override
-    public void start(){
-        
-    }
     
     @Override
     public void run()
@@ -132,8 +127,9 @@ public final class ThreadServer extends ClientThread implements Runnable{
             try {
                 System.out.println("Server waiting for clients on port: " + portNumber);
                 Socket socket = serverSocket.accept();
-                Class<? extends FXMLDocumentController.User> user = FXMLDocumentController.User.class;
+                Class<? extends LoginController.User> user = LoginController.User.class;
                 ClientThread t = null;
+                System.out.println(user.toString());
                 try {
                     t = new ClientThread(socket, user);
                 } catch (NoSuchMethodException ex) {

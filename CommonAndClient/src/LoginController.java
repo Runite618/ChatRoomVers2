@@ -67,9 +67,16 @@ public class LoginController implements Initializable {
         public String getUser() {
             return user;
         }
+        
+        public void setUser(String user) {
+            this.user = user;
+        }
+        
+        @Override
+        public String toString() {
+            return user;
+        }
     }
-
-    public User userName;
     
     /**
      * Initializes the controller class.
@@ -92,11 +99,12 @@ public class LoginController implements Initializable {
             Stage stage;
             Parent root = null;
 
-            userName = new User(textOfUserField);
+            User user = new User(textOfUserField);
+            user.setUser(textOfUserField);
             
             stage = (Stage) enterChatRoom.getScene().getWindow();
             try {
-                root = controllerFactory(userName).load();
+                root = controllerFactory(user).load();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -109,7 +117,7 @@ public class LoginController implements Initializable {
         }
     }
     
-    public FXMLLoader controllerFactory(User userName) {
+    public FXMLLoader controllerFactory(User user) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("FXMLDocument.fxml"));
         fxmlLoader.setControllerFactory(new Callback<Class<?>, Object>() {
             @Override
@@ -117,7 +125,7 @@ public class LoginController implements Initializable {
                 if (controllerClass == FXMLDocumentController.class) {
                     FXMLDocumentController controller = new FXMLDocumentController();
                     // Edit object variables here.
-                    controller.setUser(userName);
+                    controller.setUser(user);
                     return controller;
                 } else {
                     try {
