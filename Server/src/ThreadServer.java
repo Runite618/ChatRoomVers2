@@ -30,7 +30,6 @@ public final class ThreadServer extends ClientThread implements Runnable{
     private Socket clientSocket;
     private ServerSocket serverSocket;
     private static final int portNumber = 4;
-    private static Thread t1;
     private ArrayList<ClientThread> al = new ArrayList<ClientThread>();
     private Integer count = 0;
     
@@ -74,10 +73,6 @@ public final class ThreadServer extends ClientThread implements Runnable{
         this.clientSocket = clientSocket;
     }
 
-    public void open() throws IOException {
-        setStreamIn(new DataInputStream(new BufferedInputStream(getClientSocket().getInputStream())));
-    }
-
     public void close() throws IOException {
         if (clientSocket != null) {
             clientSocket.close();
@@ -85,14 +80,6 @@ public final class ThreadServer extends ClientThread implements Runnable{
         if (streamIn != null) {
             streamIn.close();
         }
-    }
-    
-    public ThreadServer()
-    {
-//            System.out.println("Binding to port " + getPortNumber() + ", please wait  ...");
-//            clientToServer();
-//            open();
-        super();
     }
     
     public void clientToServer() throws IOException

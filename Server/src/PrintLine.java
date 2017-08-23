@@ -30,7 +30,6 @@ public class PrintLine extends Thread {
     @Override
     public void run() {
         boolean done = false;
-        List<ClientThread> lines = new ArrayList<ClientThread>();
         while (!done) {
             try {
                 sInput = alElement.getSInput();
