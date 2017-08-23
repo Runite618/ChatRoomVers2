@@ -10,13 +10,16 @@ import java.io.UnsupportedEncodingException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import static javafx.application.Application.launch;
 
-public class ChatClient extends Thread{
+public class ChatClient extends FXMLDocumentController implements Runnable{
 
     private Socket socket;
     public InputStream console;
     private BufferedReader consoleReader;
+    private BufferedReader in;
     private DataOutputStream streamOut;
     protected DataInputStream streamIn;
     
@@ -27,12 +30,18 @@ public class ChatClient extends Thread{
     
     public ChatClient(String serverName, int serverPort) throws IOException {
         System.out.println("Establishing connection. Please wait ...");
-        socket = new Socket(serverName, serverPort);
+        this.socket = new Socket(serverName, serverPort);
         System.out.println("Connected: " + socket);
-        streamOut = startClient(socket);
-        streamIn = new DataInputStream(socket.getInputStream());
+        this.streamOut = startClient(socket);
+        this.streamIn = new DataInputStream(socket.getInputStream());
+        this.in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
     }
 
+    public void setIn(BufferedReader in)
+    {
+        this.in = in;
+    }
+    
     public void setStreamOut(DataOutputStream streamOut)
     {
         this.streamOut = streamOut;
@@ -41,6 +50,11 @@ public class ChatClient extends Thread{
     public void setStreamIn(DataInputStream streamIn)
     {
         this.streamIn = streamIn;
+    }
+    
+    public BufferedReader getIn() 
+    {
+        return in;
     }
     
     public DataOutputStream getStreamOut()
@@ -76,6 +90,7 @@ public class ChatClient extends Thread{
        launch(args);
     }
     
+    @Override
     public void run()
     {
     }

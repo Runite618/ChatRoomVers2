@@ -1,7 +1,9 @@
 
 import static com.sun.org.apache.xalan.internal.xsltc.compiler.util.Type.String;
+import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -21,10 +23,12 @@ public class PrintLine extends Thread {
     private ClientThread alElement;
     private Integer count;
     private DataInputStream sInput;
+    private ArrayList<ClientThread> al;
 
-    public PrintLine(ClientThread alElement, Integer count) {
+    public PrintLine(ClientThread alElement, Integer count, ArrayList<ClientThread> al) {
         this.alElement = alElement;
         this.count = count;
+        this.al = al;
     }
 
     @Override
@@ -33,7 +37,12 @@ public class PrintLine extends Thread {
         while (!done) {
             try {
                 sInput = alElement.getSInput();
-                System.out.println(sInput.readUTF());
+                String message = sInput.readUTF();
+                System.out.println(message);
+                for (ClientThread alElement : al) {
+                    alElement.getPrintWriter().println(message);
+                    alElement.getPrintWriter().flush();
+                }
             } catch (IOException ex) {
                 Logger.getLogger(PrintLine.class.getName()).log(Level.SEVERE, null, ex);
             }

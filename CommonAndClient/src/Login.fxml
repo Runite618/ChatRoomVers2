@@ -9,9 +9,6 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="LoginController">
-    <stylesheets>
-        <URL value="@login.css" />
-    </stylesheets>
    <children>
       <HBox fx:id="userBox" layoutX="187.0" layoutY="152.0" prefHeight="25.0" prefWidth="227.0">
          <children>

@@ -138,7 +138,7 @@ public final class ThreadServer extends ClientThread implements Runnable{
         }
         for (int i = 0; i < al.size(); i++)
         {
-            Thread printLineThread = new Thread(new PrintLine(al.get(i), count));
+            Thread printLineThread = new Thread(new PrintLine(al.get(i), count, al));
             printLineThread.start();
         }
     }

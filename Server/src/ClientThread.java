@@ -3,6 +3,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 import static java.lang.Math.random;
 import java.net.Socket;
 import java.util.UUID;
@@ -26,6 +27,7 @@ public class ClientThread extends Thread {
     protected DataOutputStream sOutput;
     private UUID id;
     private Class<? extends LoginController.User> user;
+    private PrintWriter printWriter;
     
     ClientThread()
     {
@@ -37,6 +39,7 @@ public class ClientThread extends Thread {
         this.id = randomUUID();
         this.socket = socket;
         this.user = user;
+        this.printWriter = new PrintWriter(socket.getOutputStream());
     }
     
     public void run()
@@ -69,5 +72,15 @@ public class ClientThread extends Thread {
     public void setSInput(DataInputStream sInput)
     {
         this.sInput = sInput;
+    }
+    
+    public PrintWriter getPrintWriter()
+    {
+        return printWriter;
+    }
+    
+    public void setPrintWriter(PrintWriter printWriter)
+    {
+        this.printWriter = printWriter;
     }
 }

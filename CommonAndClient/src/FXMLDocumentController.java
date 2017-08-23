@@ -106,11 +106,13 @@ public class FXMLDocumentController extends LoginController implements Initializ
             users.prefWidthProperty().bind(usersView.widthProperty());
             chatMessage.setStyle("-fx-prompt-text-fill: derive(-fx-control-inner-background, -30%);");
             chatRoom.setStyle("-fx-prompt-text-fill: derive(-fx-control-inner-background, -30%);");
-            setChatClient(new ChatClient("localhost", 4));
-            Thread clientThread = new Thread(getChatClient());
+            chatClient = new ChatClient("localhost", 4);
+            Thread clientThread = new Thread(chatClient);
             clientThread.start();
-            Thread serverThread = new Thread(new ListenFromServer(chatClient));
-            serverThread.start();
+            Thread FXMLDocumentThread = new Thread(this);
+            FXMLDocumentThread.start();
+//            Thread serverThread = new Thread(new ListenFromServer(getChatClient()));
+//            serverThread.start();
             send.setOnAction(new EventHandler<ActionEvent>() {
                 
                 @Override
@@ -140,16 +142,22 @@ public class FXMLDocumentController extends LoginController implements Initializ
             String wholeLine = UserName.getUser() + ": " + line;
             String wholeLineN = UserName.getUser() + ": " + line + "\n";
             chatClient.writeToUTF(wholeLine);
-            chatRoom.appendText(wholeLineN);
+//            chatRoom.appendText(wholeLineN);
         } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public void run()
-    {
-        
+
+    @Override
+    public void run() {
+        while(true) {
+            try {
+                chatRoom.appendText(chatClient.getIn().readLine() + "\n");
+            } catch (IOException ex) {
+                Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 }
