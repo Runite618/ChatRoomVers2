@@ -3,6 +3,8 @@ import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -27,6 +29,8 @@ import static javafx.application.Application.launch;
 public final class ThreadServer extends ClientThread implements Runnable{
     private DataInputStream streamIn;
     private DataOutputStream streamOut;
+    private ObjectInputStream ois;
+    private ObjectOutputStream oos;
     private Socket clientSocket;
     private ServerSocket serverSocket;
     private static final int portNumber = 4;
@@ -43,6 +47,16 @@ public final class ThreadServer extends ClientThread implements Runnable{
         return serverSocket;
     }
     
+    public ObjectOutputStream getOos()
+    {
+        return oos;
+    }
+    
+    public ObjectInputStream getOis()
+    {
+        return ois;
+    }
+    
     public DataInputStream getStreamIn()
     {
         return streamIn;
@@ -51,6 +65,16 @@ public final class ThreadServer extends ClientThread implements Runnable{
     public Socket getClientSocket()
     {
         return clientSocket;
+    }
+    
+    public void setOos(ObjectOutputStream oos) 
+    {
+        this.oos = oos;
+    }
+    
+    public void setOis(ObjectInputStream ois) 
+    {
+        this.ois = ois;
     }
     
     public void setServerSocket(ServerSocket serverSocket)

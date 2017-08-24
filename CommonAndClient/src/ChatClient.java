@@ -6,6 +6,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -22,6 +24,8 @@ public class ChatClient extends FXMLDocumentController implements Runnable{
     private BufferedReader in;
     private DataOutputStream streamOut;
     protected DataInputStream streamIn;
+    private ObjectOutputStream oos;
+    private ObjectInputStream ois;
     
     public ChatClient()
     {
@@ -37,6 +41,16 @@ public class ChatClient extends FXMLDocumentController implements Runnable{
         this.in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
     }
 
+    public void setOos(ObjectOutputStream oos) 
+    {
+        this.oos = oos;
+    }
+    
+    public void setOis(ObjectInputStream ois) 
+    {
+        this.ois = ois;
+    }
+    
     public void setIn(BufferedReader in)
     {
         this.in = in;
@@ -65,6 +79,16 @@ public class ChatClient extends FXMLDocumentController implements Runnable{
     public DataInputStream getStreamIn()
     {
         return streamIn;
+    }
+    
+    public ObjectOutputStream getOos()
+    {
+        return oos;
+    }
+    
+    public ObjectInputStream getOis()
+    {
+        return ois;
     }
     
     public DataOutputStream startClient(Socket socket) throws IOException {
