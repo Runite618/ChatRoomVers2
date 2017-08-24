@@ -111,6 +111,7 @@ public class FXMLDocumentController extends LoginController implements Initializ
             clientThread.start();
             Thread FXMLDocumentThread = new Thread(this);
             FXMLDocumentThread.start();
+            chatClient.getOos().writeObject(getUser().user);
 //            Thread serverThread = new Thread(new ListenFromServer(getChatClient()));
 //            serverThread.start();
             send.setOnAction(new EventHandler<ActionEvent>() {

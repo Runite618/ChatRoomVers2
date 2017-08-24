@@ -138,9 +138,12 @@ public final class ThreadServer extends ClientThread implements Runnable{
             try {
                 System.out.println("Server waiting for clients on port: " + portNumber);
                 Socket socket = serverSocket.accept();
+                oos = new ObjectOutputStream(socket.getOutputStream());
+                ois = new ObjectInputStream(socket.getInputStream());
+                String username = (String) ois.readObject();
                 Class<? extends LoginController.User> user = LoginController.User.class;
                 ClientThread t = null;
-                System.out.println(user.toString());
+                System.out.println(username + " has connected.");
                 try {
                     t = new ClientThread(socket, user);
                 } catch (NoSuchMethodException ex) {
@@ -157,6 +160,8 @@ public final class ThreadServer extends ClientThread implements Runnable{
                     break outer;
                 }
             } catch (IOException ex) {
+                Logger.getLogger(ThreadServer.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
                 Logger.getLogger(ThreadServer.class.getName()).log(Level.SEVERE, null, ex);
             }
         }

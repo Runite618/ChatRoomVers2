@@ -48,7 +48,6 @@ public class ClientThread extends Thread {
             System.out.println("Thread is attempting to create Data Input/Output Streams");
             sInput = new DataInputStream(socket.getInputStream());
             sOutput = new DataOutputStream(socket.getOutputStream());
-            System.out.println(user.toString() + " " + this.id + " just connected.");
         } catch (IOException ex) {
             Logger.getLogger(ClientThread.class.getName()).log(Level.SEVERE, null, ex);
         }

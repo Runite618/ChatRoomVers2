@@ -38,6 +38,8 @@ public class ChatClient extends FXMLDocumentController implements Runnable{
         System.out.println("Connected: " + socket);
         this.streamOut = startClient(socket);
         this.streamIn = new DataInputStream(socket.getInputStream());
+        this.oos = new ObjectOutputStream(socket.getOutputStream());
+        this.ois = new ObjectInputStream(socket.getInputStream());
         this.in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
     }
 
