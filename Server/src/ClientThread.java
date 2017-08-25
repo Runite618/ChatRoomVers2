@@ -23,8 +23,8 @@ import java.util.logging.Logger;
  */
 public class ClientThread extends Thread {
     private Socket socket;
-    protected DataInputStream sInput;
-    protected DataOutputStream sOutput;
+    private DataInputStream sInput;
+    private DataOutputStream sOutput;
     private UUID id;
     private Class<? extends LoginController.User> user;
     private PrintWriter printWriter;

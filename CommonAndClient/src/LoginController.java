@@ -38,14 +38,8 @@ public class LoginController implements Initializable {
     private TextField userField;
 
     @FXML
-    private HBox userBox;
-
-    @FXML
     private Button enterChatRoom;
-
-    @FXML
-    private Label user;
-
+    
     @FXML
     private Label userEmpty;
     

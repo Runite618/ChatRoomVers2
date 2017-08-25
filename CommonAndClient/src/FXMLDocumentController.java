@@ -56,10 +56,10 @@ public class FXMLDocumentController extends LoginController implements Initializ
     private TableView<LoginController.User> usersView;
 
     @FXML
-    public TextField chatMessage;
+    private TextField chatMessage;
 
     @FXML
-    public TextArea chatRoom;
+    private TextArea chatRoom;
 
     @FXML
     public void onEnter(ActionEvent ae) throws IOException
@@ -70,7 +70,7 @@ public class FXMLDocumentController extends LoginController implements Initializ
     
     private ChatClient chatClient;
     
-    public static LoginController.User UserName;
+    private static LoginController.User UserName;
 
     public static LoginController.User getUser() {
         return UserName;
@@ -141,7 +141,6 @@ public class FXMLDocumentController extends LoginController implements Initializ
             }
             chatMessage.setText("");
             String wholeLine = UserName.getUser() + ": " + line;
-            String wholeLineN = UserName.getUser() + ": " + line + "\n";
             chatClient.writeToUTF(wholeLine);
 //            chatRoom.appendText(wholeLineN);
         } catch (UnsupportedEncodingException ex) {

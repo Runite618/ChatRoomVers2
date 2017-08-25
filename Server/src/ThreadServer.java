@@ -117,7 +117,7 @@ public final class ThreadServer extends ClientThread implements Runnable{
     public void acceptClient() throws IOException
     {
         ChatClient chatClient = new ChatClient("localhost", portNumber);
-        setStreamOut(chatClient.startClient(getClientSocket()));
+        setStreamOut(chatClient.getStreamOut());
         System.out.println("Client accepted: " + getClientSocket());
     }
     

@@ -19,11 +19,10 @@ import static javafx.application.Application.launch;
 public class ChatClient extends FXMLDocumentController implements Runnable{
 
     private Socket socket;
-    public InputStream console;
     private BufferedReader consoleReader;
     private BufferedReader in;
     private DataOutputStream streamOut;
-    protected DataInputStream streamIn;
+    private DataInputStream streamIn;
     private ObjectOutputStream oos;
     private ObjectInputStream ois;
     
@@ -36,7 +35,7 @@ public class ChatClient extends FXMLDocumentController implements Runnable{
         System.out.println("Establishing connection. Please wait ...");
         this.socket = new Socket(serverName, serverPort);
         System.out.println("Connected: " + socket);
-        this.streamOut = startClient(socket);
+        this.streamOut = new DataOutputStream(socket.getOutputStream());
         this.streamIn = new DataInputStream(socket.getInputStream());
         this.oos = new ObjectOutputStream(socket.getOutputStream());
         this.ois = new ObjectInputStream(socket.getInputStream());
@@ -93,13 +92,8 @@ public class ChatClient extends FXMLDocumentController implements Runnable{
         return ois;
     }
     
-    public DataOutputStream startClient(Socket socket) throws IOException {
-        return streamOut = new DataOutputStream(socket.getOutputStream());
-    }
-    
     public String send(InputStream console) throws UnsupportedEncodingException, IOException
     {
-        this.console = console;
         consoleReader = new BufferedReader(new InputStreamReader(console, "UTF-8"));
         String line = "";
         line = consoleReader.readLine();
