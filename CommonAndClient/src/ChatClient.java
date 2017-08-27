@@ -19,6 +19,7 @@ import static javafx.application.Application.launch;
 public class ChatClient extends FXMLDocumentController implements Runnable{
 
     private Socket socket;
+    private Socket socket2;
     private BufferedReader consoleReader;
     private BufferedReader in;
     private DataOutputStream streamOut;
@@ -31,14 +32,16 @@ public class ChatClient extends FXMLDocumentController implements Runnable{
         
     }
     
-    public ChatClient(String serverName, int serverPort) throws IOException {
+    public ChatClient(String serverName, int serverPort, int serverPort2) throws IOException {
         System.out.println("Establishing connection. Please wait ...");
         this.socket = new Socket(serverName, serverPort);
+        this.socket2 = new Socket(serverName, serverPort2);
         System.out.println("Connected: " + socket);
+        System.out.println("Connected: " + socket2);
         this.streamOut = new DataOutputStream(socket.getOutputStream());
         this.streamIn = new DataInputStream(socket.getInputStream());
-        this.oos = new ObjectOutputStream(socket.getOutputStream());
-        this.ois = new ObjectInputStream(socket.getInputStream());
+        this.oos = new ObjectOutputStream(socket2.getOutputStream());
+        this.ois = new ObjectInputStream(socket2.getInputStream());
         this.in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
     }
 

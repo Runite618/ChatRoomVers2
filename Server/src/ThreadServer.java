@@ -33,7 +33,9 @@ public final class ThreadServer extends ClientThread implements Runnable{
     private ObjectOutputStream oos;
     private Socket clientSocket;
     private ServerSocket serverSocket;
+    private ServerSocket serverSocket2;
     private static final int portNumber = 4;
+    private static final int portNumber2 = 6;
     private ArrayList<ClientThread> al = new ArrayList<ClientThread>();
     private Integer count = 0;
     
@@ -116,7 +118,7 @@ public final class ThreadServer extends ClientThread implements Runnable{
     
     public void acceptClient() throws IOException
     {
-        ChatClient chatClient = new ChatClient("localhost", portNumber);
+        ChatClient chatClient = new ChatClient("localhost", portNumber, portNumber2);
         setStreamOut(chatClient.getStreamOut());
         System.out.println("Client accepted: " + getClientSocket());
     }
@@ -127,6 +129,7 @@ public final class ThreadServer extends ClientThread implements Runnable{
         ServerSocket serverSocket = null;
         try {
             serverSocket = new ServerSocket(portNumber);
+            serverSocket2 = new ServerSocket(portNumber2);
         } catch (IOException ex) {
             Logger.getLogger(ThreadServer.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -137,9 +140,11 @@ public final class ThreadServer extends ClientThread implements Runnable{
         {
             try {
                 System.out.println("Server waiting for clients on port: " + portNumber);
+                System.out.println("Server waiting for clients on port: " + portNumber2);
                 Socket socket = serverSocket.accept();
-                oos = new ObjectOutputStream(socket.getOutputStream());
-                ois = new ObjectInputStream(socket.getInputStream());
+                Socket socket2 = serverSocket2.accept();
+                oos = new ObjectOutputStream(socket2.getOutputStream());
+                ois = new ObjectInputStream(socket2.getInputStream());
                 String username = (String) ois.readObject();
                 Class<? extends LoginController.User> user = LoginController.User.class;
                 ClientThread t = null;

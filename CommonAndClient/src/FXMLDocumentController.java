@@ -106,7 +106,7 @@ public class FXMLDocumentController extends LoginController implements Initializ
             users.prefWidthProperty().bind(usersView.widthProperty());
             chatMessage.setStyle("-fx-prompt-text-fill: derive(-fx-control-inner-background, -30%);");
             chatRoom.setStyle("-fx-prompt-text-fill: derive(-fx-control-inner-background, -30%);");
-            chatClient = new ChatClient("localhost", 4);
+            chatClient = new ChatClient("localhost", 4, 6);
             Thread clientThread = new Thread(chatClient);
             clientThread.start();
             Thread FXMLDocumentThread = new Thread(this);
