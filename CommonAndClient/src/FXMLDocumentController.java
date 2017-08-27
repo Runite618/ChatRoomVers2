@@ -120,6 +120,10 @@ public class FXMLDocumentController extends LoginController implements Initializ
             clientThread.start();
             Thread FXMLDocumentThread = new Thread(this);
             FXMLDocumentThread.start();
+            users.setCellValueFactory(new PropertyValueFactory<LoginController.User, String>("user"));
+            UsersList usersList = new UsersList(usersView, usersOnline, chatClient);
+            Thread usersThread = new Thread(usersList);
+            usersThread.start();
             chatClient.getOos().writeObject(getUser().user);
 //            Thread serverThread = new Thread(new ListenFromServer(getChatClient()));
 //            serverThread.start();
@@ -130,17 +134,7 @@ public class FXMLDocumentController extends LoginController implements Initializ
                     send(chatClient);
                 }
             });
-            usersOnline = (ArrayList<String>) chatClient.getOis().readObject();
-            for(int i = 0; i < usersOnline.size(); i++) {
-                User user = new User(usersOnline.get(i));
-                usersOnlineUser.add(user);
-            }
-            oUsersOnlineUser = FXCollections.observableArrayList(usersOnlineUser);
-            users.setCellValueFactory(new PropertyValueFactory<LoginController.User, String>("user"));
-            usersView.setItems(oUsersOnlineUser);
         } catch (IOException ex) {
-            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

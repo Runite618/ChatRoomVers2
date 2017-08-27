@@ -10,7 +10,7 @@
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
     <jar href="Server.jar" size="6616" download="eager" />
     <jar href="lib\Common.jar" size="1915" download="eager" />
-    <jar href="lib\CommonAndClient.jar" size="25658" download="eager" />
+    <jar href="lib\CommonAndClient.jar" size="24936" download="eager" />
   </resources>
   <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="Server" >
     <param name="requiredFXVersion" value="8.0+"/>
