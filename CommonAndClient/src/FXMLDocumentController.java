@@ -19,9 +19,12 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -71,6 +74,12 @@ public class FXMLDocumentController extends LoginController implements Initializ
     private ChatClient chatClient;
     
     private static LoginController.User UserName;
+    
+    private ArrayList<String> usersOnline = new ArrayList<String>();
+    
+    private ArrayList<User> usersOnlineUser = new ArrayList<User>();
+    
+    private ObservableList<User> oUsersOnlineUser;
 
     public static LoginController.User getUser() {
         return UserName;
@@ -121,9 +130,17 @@ public class FXMLDocumentController extends LoginController implements Initializ
                     send(chatClient);
                 }
             });
+            usersOnline = (ArrayList<String>) chatClient.getOis().readObject();
+            for(int i = 0; i < usersOnline.size(); i++) {
+                User user = new User(usersOnline.get(i));
+                usersOnlineUser.add(user);
+            }
+            oUsersOnlineUser = FXCollections.observableArrayList(usersOnlineUser);
             users.setCellValueFactory(new PropertyValueFactory<LoginController.User, String>("user"));
-            usersView.getItems().add(getUser());
+            usersView.setItems(oUsersOnlineUser);
         } catch (IOException ex) {
+            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

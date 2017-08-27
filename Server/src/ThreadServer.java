@@ -37,6 +37,7 @@ public final class ThreadServer extends ClientThread implements Runnable{
     private static final int portNumber = 4;
     private static final int portNumber2 = 6;
     private ArrayList<ClientThread> al = new ArrayList<ClientThread>();
+    private ArrayList<String> usersOnline = new ArrayList<String>();
     private Integer count = 0;
     
     public static int getPortNumber()
@@ -149,6 +150,8 @@ public final class ThreadServer extends ClientThread implements Runnable{
                 Class<? extends LoginController.User> user = LoginController.User.class;
                 ClientThread t = null;
                 System.out.println(username + " has connected.");
+                usersOnline.add(username);
+                oos.writeObject(usersOnline);
                 try {
                     t = new ClientThread(socket, user);
                 } catch (NoSuchMethodException ex) {
