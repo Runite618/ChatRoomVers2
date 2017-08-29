@@ -36,12 +36,10 @@ public class PrintLine extends FXMLDocumentController implements Runnable {
     @Override
     public void run() {
         boolean done = false;
-        for (ClientThread alEleemnt: al) {
-            try {
-                alElement.getOos().writeObject(usersOnline);
-            } catch (IOException ex) {
-                Logger.getLogger(PrintLine.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        try {
+            alElement.getOos().writeObject(usersOnline);
+        } catch (IOException ex) {
+            Logger.getLogger(PrintLine.class.getName()).log(Level.SEVERE, null, ex);
         }
         while (!done) {
             try {
