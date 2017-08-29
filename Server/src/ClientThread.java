@@ -22,13 +22,10 @@ import java.util.logging.Logger;
  * @author matth
  */
 public class ClientThread extends Thread {
-    private Socket socket;
-    private Socket socket2;
     private DataInputStream sInput;
     private DataOutputStream sOutput;
     private ObjectInputStream ois;
     private ObjectOutputStream oos;
-    private UUID id;
     private Class<? extends LoginController.User> user;
     private PrintWriter printWriter;
     
@@ -39,15 +36,12 @@ public class ClientThread extends Thread {
     
     ClientThread(Socket socket, Socket socket2, Class<? extends LoginController.User> user) throws IOException, NoSuchMethodException
     {
-        this.id = randomUUID();
-        this.socket = socket;
         this.user = user;
         this.printWriter = new PrintWriter(socket.getOutputStream());
-        this.socket2 = socket2;
-        sInput = new DataInputStream(socket.getInputStream());
-        sOutput = new DataOutputStream(socket.getOutputStream());
-        oos = new ObjectOutputStream(socket2.getOutputStream());
-        ois = new ObjectInputStream(socket2.getInputStream());
+        this.sInput = new DataInputStream(socket.getInputStream());
+        this.sOutput = new DataOutputStream(socket.getOutputStream());
+        this.oos = new ObjectOutputStream(socket2.getOutputStream());
+        this.ois = new ObjectInputStream(socket2.getInputStream());
     }
     
     public void run()
