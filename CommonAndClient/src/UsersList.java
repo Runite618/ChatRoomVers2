@@ -17,7 +17,7 @@ import javafx.scene.control.TableView;
  *
  * @author matth
  */
-public class UsersList extends LoginController implements Runnable {
+public class UsersList extends LoginController {
     private TableView<LoginController.User> usersView;
     private ObservableList<LoginController.User> oUsersOnlineUser;
     private ArrayList<String> usersOnline;
@@ -31,22 +31,19 @@ public class UsersList extends LoginController implements Runnable {
         this.chatClient = chatClient;
     }
     
-    @Override
-    public void run() {
-        while(true) {
-            try {
-                usersOnline = (ArrayList<String>) chatClient.getOis().readObject();
-                for(int i = 0; i < usersOnline.size(); i++) {
-                    LoginController.User user = new LoginController.User(usersOnline.get(i));
-                    usersOnlineUser.add(user);
-                }
-                oUsersOnlineUser = FXCollections.observableArrayList(usersOnlineUser);
-                usersView.setItems(oUsersOnlineUser);
-            } catch (IOException ex) {
-                Logger.getLogger(UsersList.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(UsersList.class.getName()).log(Level.SEVERE, null, ex);
+    public void setUsersView() {
+        try {
+            usersOnline = (ArrayList<String>) chatClient.getOis().readObject();
+            for (int i = 0; i < usersOnline.size(); i++) {
+                LoginController.User user = new LoginController.User(usersOnline.get(i));
+                usersOnlineUser.add(user);
             }
+            oUsersOnlineUser = FXCollections.observableArrayList(usersOnlineUser);
+            usersView.setItems(oUsersOnlineUser);
+        } catch (IOException ex) {
+            Logger.getLogger(UsersList.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(UsersList.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

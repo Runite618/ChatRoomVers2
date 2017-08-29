@@ -80,6 +80,8 @@ public class FXMLDocumentController extends LoginController implements Initializ
     private ArrayList<User> usersOnlineUser = new ArrayList<User>();
     
     private ObservableList<User> oUsersOnlineUser;
+    
+    private ArrayList<Thread> listUsersThread;
 
     public static LoginController.User getUser() {
         return UserName;
@@ -121,10 +123,9 @@ public class FXMLDocumentController extends LoginController implements Initializ
             Thread FXMLDocumentThread = new Thread(this);
             FXMLDocumentThread.start();
             users.setCellValueFactory(new PropertyValueFactory<LoginController.User, String>("user"));
-            UsersList usersList = new UsersList(usersView, usersOnline, chatClient);
-            Thread usersThread = new Thread(usersList);
-            usersThread.start();
             chatClient.getOos().writeObject(getUser().user);
+            UsersList usersList = new UsersList(usersView, usersOnline, chatClient);
+            usersList.setUsersView();
 //            Thread serverThread = new Thread(new ListenFromServer(getChatClient()));
 //            serverThread.start();
             send.setOnAction(new EventHandler<ActionEvent>() {
