@@ -23,8 +23,11 @@ import java.util.logging.Logger;
  */
 public class ClientThread extends Thread {
     private Socket socket;
+    private Socket socket2;
     private DataInputStream sInput;
     private DataOutputStream sOutput;
+    private ObjectInputStream ois;
+    private ObjectOutputStream oos;
     private UUID id;
     private Class<? extends LoginController.User> user;
     private PrintWriter printWriter;
@@ -34,23 +37,22 @@ public class ClientThread extends Thread {
         
     }
     
-    ClientThread(Socket socket, Class<? extends LoginController.User> user) throws IOException, NoSuchMethodException
+    ClientThread(Socket socket, Socket socket2, Class<? extends LoginController.User> user) throws IOException, NoSuchMethodException
     {
         this.id = randomUUID();
         this.socket = socket;
         this.user = user;
         this.printWriter = new PrintWriter(socket.getOutputStream());
+        this.socket2 = socket2;
+        sInput = new DataInputStream(socket.getInputStream());
+        sOutput = new DataOutputStream(socket.getOutputStream());
+        oos = new ObjectOutputStream(socket2.getOutputStream());
+        ois = new ObjectInputStream(socket2.getInputStream());
     }
     
     public void run()
     {
-        try {
-            System.out.println("Thread is attempting to create Data Input/Output Streams");
-            sInput = new DataInputStream(socket.getInputStream());
-            sOutput = new DataOutputStream(socket.getOutputStream());
-        } catch (IOException ex) {
-            Logger.getLogger(ClientThread.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        System.out.println("Thread is attempting to create Data Input/Output Streams");
     }
     
     public DataOutputStream getSOutput()
@@ -81,5 +83,21 @@ public class ClientThread extends Thread {
     public void setPrintWriter(PrintWriter printWriter)
     {
         this.printWriter = printWriter;
+    }
+
+    public ObjectOutputStream getOos() {
+        return oos;
+    }
+
+    public ObjectInputStream getOis() {
+        return ois;
+    }
+    
+    public void setOos(ObjectOutputStream oos) {
+        this.oos = oos;
+    }
+
+    public void setOis(ObjectInputStream ois) {
+        this.ois = ois;
     }
 }

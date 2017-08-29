@@ -18,22 +18,31 @@ import java.util.logging.Logger;
  *
  * @author matth
  */
-public class PrintLine extends Thread {
+public class PrintLine extends FXMLDocumentController implements Runnable {
 
     private ClientThread alElement;
     private Integer count;
     private DataInputStream sInput;
     private ArrayList<ClientThread> al;
+    private ArrayList<String> usersOnline;
 
-    public PrintLine(ClientThread alElement, Integer count, ArrayList<ClientThread> al) {
+    public PrintLine(ClientThread alElement, Integer count, ArrayList<ClientThread> al, ArrayList<String> usersOnline) {
         this.alElement = alElement;
         this.count = count;
         this.al = al;
+        this.usersOnline = usersOnline;
     }
 
     @Override
     public void run() {
         boolean done = false;
+        for (ClientThread alEleemnt: al) {
+            try {
+                alElement.getOos().writeObject(usersOnline);
+            } catch (IOException ex) {
+                Logger.getLogger(PrintLine.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         while (!done) {
             try {
                 sInput = alElement.getSInput();

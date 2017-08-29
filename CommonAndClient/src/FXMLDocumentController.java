@@ -75,14 +75,6 @@ public class FXMLDocumentController extends LoginController implements Initializ
     
     private static LoginController.User UserName;
     
-    private ArrayList<String> usersOnline = new ArrayList<String>();
-    
-    private ArrayList<User> usersOnlineUser = new ArrayList<User>();
-    
-    private ObservableList<User> oUsersOnlineUser;
-    
-    private ArrayList<Thread> listUsersThread;
-
     public static LoginController.User getUser() {
         return UserName;
     }
@@ -117,15 +109,12 @@ public class FXMLDocumentController extends LoginController implements Initializ
             users.prefWidthProperty().bind(usersView.widthProperty());
             chatMessage.setStyle("-fx-prompt-text-fill: derive(-fx-control-inner-background, -30%);");
             chatRoom.setStyle("-fx-prompt-text-fill: derive(-fx-control-inner-background, -30%);");
-            chatClient = new ChatClient("localhost", 4, 6);
+            users.setCellValueFactory(new PropertyValueFactory<LoginController.User, String>("user"));
+            chatClient = new ChatClient("localhost", 4, 6, usersView);
             Thread clientThread = new Thread(chatClient);
             clientThread.start();
             Thread FXMLDocumentThread = new Thread(this);
             FXMLDocumentThread.start();
-            users.setCellValueFactory(new PropertyValueFactory<LoginController.User, String>("user"));
-            chatClient.getOos().writeObject(getUser().user);
-            UsersList usersList = new UsersList(usersView, usersOnline, chatClient);
-            usersList.setUsersView();
 //            Thread serverThread = new Thread(new ListenFromServer(getChatClient()));
 //            serverThread.start();
             send.setOnAction(new EventHandler<ActionEvent>() {
