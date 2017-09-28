@@ -1,3 +1,4 @@
+
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -112,6 +113,14 @@ public class ChatClient extends FXMLDocumentController implements Runnable {
         while (true) {
             try {
                 usersOnline = (ArrayList<String>) getOis().readObject();
+                boolean rerunFlag = false;
+                int numCount = checkListMultiples();
+                if (numCount > 1) {
+                    System.out.println("Please re-run program and don't enter same user name multiple times!");
+                    rerunFlag = true;
+                    getOos().writeObject(rerunFlag);
+                    platformExit();
+                }
                 for (int i = 0; i < usersOnline.size(); i++) {
                     LoginController.User user = new LoginController.User(usersOnline.get(i));
                     usersOnlineUser.add(user);
@@ -124,5 +133,15 @@ public class ChatClient extends FXMLDocumentController implements Runnable {
                 Logger.getLogger(ChatClient.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+    
+    public int checkListMultiples() {
+        int numCount = 0;
+        for (String thisName : usersOnline) {
+            if (thisName.contains(getUser().user)) {
+                numCount++;
+            }
+        }
+        return numCount;
     }
 }

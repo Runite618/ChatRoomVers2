@@ -11,6 +11,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -32,7 +33,7 @@ import javafx.util.Callback;
  *
  * @author matth
  */
-public class LoginController implements Initializable {
+public class LoginController extends javafx.application.Application implements Initializable {
 
     @FXML
     private TextField userField;
@@ -47,6 +48,10 @@ public class LoginController implements Initializable {
     public void onEnter(ActionEvent ae) throws IOException
     {
         enterChatRoom();
+    }
+
+    @Override
+    public void start(Stage primaryStage) {
     }
 
     public class User
@@ -72,6 +77,8 @@ public class LoginController implements Initializable {
         }
     }
     
+    private Stage stage;
+    
     /**
      * Initializes the controller class.
      */
@@ -90,7 +97,6 @@ public class LoginController implements Initializable {
     {
         String textOfUserField = userField.getText();
         if (textOfUserField != null && !textOfUserField.isEmpty()) {
-            Stage stage;
             Parent root = null;
 
             User user = new User(textOfUserField);
@@ -131,5 +137,9 @@ public class LoginController implements Initializable {
             }
         });
         return fxmlLoader;
+    }
+    
+    public void platformExit(){
+        Platform.exit();
     }
 }

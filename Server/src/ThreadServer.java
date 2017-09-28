@@ -93,51 +93,61 @@ public final class ThreadServer extends ClientThread implements Runnable {
 
     @Override
     public void run() {
-        ServerSocket serverSocket = null;
         try {
-            serverSocket = new ServerSocket(portNumber);
-            serverSocket2 = new ServerSocket(portNumber2);
-        } catch (IOException ex) {
-            Logger.getLogger(ThreadServer.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        boolean flag = true;
-        Scanner reader = new Scanner(System.in);
-        outer:
-        while (flag) {
+            ServerSocket serverSocket = null;
             try {
-                System.out.println("Server waiting for clients on port: " + portNumber);
-                System.out.println("Server waiting for clients on port: " + portNumber2);
-                Socket socket = serverSocket.accept();
-                Socket socket2 = serverSocket2.accept();
-                Class<? extends LoginController.User> user = LoginController.User.class;
-                ClientThread t = null;
-                try {
-                    t = new ClientThread(socket, socket2, user);
-                } catch (NoSuchMethodException ex) {
-                    Logger.getLogger(ThreadServer.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                String username = (String) t.getOis().readObject();
-                System.out.println(username + " has connected.");
-                usersOnline.add(username);
-                al.add(t);
-                t.start();
-                System.out.println("Continue adding clients? [y/n]");
-                String answer = reader.nextLine();
-                count++;
-                if (answer.contains("n")) {
-                    flag = false;
-                    break outer;
-                }
+                serverSocket = new ServerSocket(portNumber);
+                serverSocket2 = new ServerSocket(portNumber2);
             } catch (IOException ex) {
                 Logger.getLogger(ThreadServer.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(ThreadServer.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
-        for (int i = 0; i < al.size(); i++) {
-            Thread printLineThread = new Thread(new PrintLine(al.get(i), count, al, usersOnline));
-            printLineThread.start();
+            
+            boolean flag = true;
+            Scanner reader = new Scanner(System.in);
+            outer:
+            while (flag) {
+                try {
+                    System.out.println("Server waiting for clients on port: " + portNumber);
+                    System.out.println("Server waiting for clients on port: " + portNumber2);
+                    Socket socket = serverSocket.accept();
+                    Socket socket2 = serverSocket2.accept();
+                    Class<? extends LoginController.User> user = LoginController.User.class;
+                    ClientThread t = null;
+                    try {
+                        t = new ClientThread(socket, socket2, user);
+                    } catch (NoSuchMethodException ex) {
+                        Logger.getLogger(ThreadServer.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    String username = (String) t.getOis().readObject();
+                    System.out.println(username + " has connected.");
+                    usersOnline.add(username);
+                    al.add(t);
+                    t.start();
+                    System.out.println("Continue adding clients? [y/n]");
+                    String answer = reader.nextLine();
+                    count++;
+                    if (answer.contains("n")) {
+                        flag = false;
+                        break outer;
+                    }
+                } catch (IOException ex) {
+                    Logger.getLogger(ThreadServer.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(ThreadServer.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            for (int i = 0; i < al.size(); i++) {
+                Thread printLineThread = new Thread(new PrintLine(al.get(i), count, al, usersOnline));
+                printLineThread.start();
+            }
+            boolean rerunFlag = (boolean) al.get(0).getOis().readObject();
+            if(rerunFlag) {
+                System.out.println("Please re-run program and don't enter same user name multiple times!");
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(ThreadServer.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ThreadServer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }
